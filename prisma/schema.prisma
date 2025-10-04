@@ -1,0 +1,36 @@
+generator client {
+  provider      = "prisma-client-js"
+  output        = "../node_modules/.prisma/client"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model AccountHolder {
+  id                         String  @id @default(cuid())
+  record_account_holder_id   String  @unique
+  record_account_holder_name String?
+  wallet_address             String  @unique()
+  cdp_wallet_id              String  @unique()
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("account_holders")
+}
+
+model ProcessedEvent {
+event_id String @id
+  event_name String
+processed_at DateTime?
+metadata Json?
+
+@@map("processed_events")
+}
+
+model Paysource {
+  recordReportingCompanyId String @id
+}
